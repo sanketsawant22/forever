@@ -5,14 +5,14 @@ import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setshowFilter] = useState(false);
   const [filterProducts, setfilterProducts] = useState([]);
 
   const [category, setcategory] = useState([]);
   const [subCategory, setsubCategory] = useState([]);
 
-  const [sortType, setsortType] = useState("relevant")
+  const [sortType, setsortType] = useState("relevant");
 
   const handleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -33,13 +33,19 @@ const Collection = () => {
   const applyFilter = () => {
     let productsCopy = products.slice();
 
+    if (showSearch && search) {
+      productsCopy = productsCopy.filter((item) => {
+        return item.name.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+
     if (category.length > 0) {
       productsCopy = productsCopy.filter((item) =>
         category.includes(item.category)
       );
     }
 
-    if(subCategory.length > 0) {
+    if (subCategory.length > 0) {
       productsCopy = productsCopy.filter((item) =>
         subCategory.includes(item.subCategory)
       );
@@ -49,31 +55,30 @@ const Collection = () => {
   };
 
   const sortProducts = () => {
-    
     let fpCopy = filterProducts.slice();
 
-    switch(sortType) {
+    switch (sortType) {
       case "low-high":
-        setfilterProducts(fpCopy.sort((a,b) => (a.price - b.price)));
+        setfilterProducts(fpCopy.sort((a, b) => a.price - b.price));
         break;
- 
+
       case "high-low":
-        setfilterProducts(fpCopy.sort((a,b) => (b.price - a.price)));
+        setfilterProducts(fpCopy.sort((a, b) => b.price - a.price));
         break;
 
       default:
         applyFilter();
         break;
     }
-  }
+  };
 
   useEffect(() => {
     sortProducts();
-  }, [sortType])
+  }, [sortType]);
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory]);
+  }, [category, subCategory, search, showSearch]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
@@ -177,7 +182,12 @@ const Collection = () => {
 
           {/* SORTING FILTER */}
 
-          <select onChange={(e) => {setsortType(e.target.value)}} className="border-2 border-gray-300 text-sm px-2">
+          <select
+            onChange={(e) => {
+              setsortType(e.target.value);
+            }}
+            className="border-2 border-gray-300 text-sm px-2"
+          >
             <option value="relevant">Sort by: Relevant</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: High to Low</option>

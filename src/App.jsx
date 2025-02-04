@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Navbar from "./components/Navbar.jsx";
+import SearchBar from "./components/searchBar.jsx";
 
 import Home from "./pages/Home.jsx";
 import Collection from "./pages/Collection.jsx";
@@ -19,6 +20,7 @@ const App = () => {
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       {/* Navbar */}
       <Navbar />
+      <SearchBar />
 
       <Routes>
         <Route path="/" element={<Home />} />
