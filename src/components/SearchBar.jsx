@@ -13,7 +13,6 @@ const SearchBar = () => {
   const [visible, setvisible] = useState(false)
 
   useEffect(() => {
-    console.log(location);
   },[location])
 
   useEffect(() => {
