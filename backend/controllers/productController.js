@@ -43,7 +43,7 @@ const addProduct = async (req, res) => {
 
         await product.save();
 
-        res.json({ success: true, data: product, message: "Product added to DB" })
+        res.json({ success: true, data: product, message: "Product added successfully" })
 
     } catch (error) {
         console.log(error);
@@ -69,7 +69,7 @@ const removeProduct = async (req, res) => {
     try {
 
         await productModel.findByIdAndDelete(req.body.id);
-        res.json({ success: true, message: "Product removed from DB" })
+        res.json({ success: true, message: "Product removed successfully" })
 
     } catch (error) {
         console.log(error);
