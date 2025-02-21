@@ -11,22 +11,23 @@ const Cart = () => {
   const [cartData, setcartData] = useState([]);
 
   useEffect(() => {
-    const tempData = [];
+    if (products.length > 0) {
+      const tempData = [];
 
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            _id: items,
-            size: item,
-            quantity: cartItems[items][item],
-          });
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            tempData.push({
+              _id: items,
+              size: item,
+              quantity: cartItems[items][item],
+            });
+          }
         }
       }
+      setcartData(tempData);
     }
-    setcartData(tempData);
-    // console.log(tempData);
-  }, [cartItems]);
+  }, [cartItems, products]);
 
   return (
     <div className="border-t pt-14">
@@ -67,7 +68,16 @@ const Cart = () => {
                 </div>
               </div>
 
-              <input onChange={(e) => e.target.value === "" || e.target.value === "0" ? null : updateQuantity(item._id, item.size, Number(e.target.value))}  
+              <input
+                onChange={(e) =>
+                  e.target.value === "" || e.target.value === "0"
+                    ? null
+                    : updateQuantity(
+                        item._id,
+                        item.size,
+                        Number(e.target.value)
+                      )
+                }
                 type="number"
                 min={1}
                 defaultValue={item.quantity}
@@ -75,9 +85,10 @@ const Cart = () => {
                 name=""
                 id=""
               />
-              <img onClick={() => {
-                updateQuantity(item._id, item.size, 0);
-              }}
+              <img
+                onClick={() => {
+                  updateQuantity(item._id, item.size, 0);
+                }}
                 className="w-4 mr-4 sm:w-5 cursor-pointer"
                 src={assets.bin_icon}
                 alt=""
@@ -87,19 +98,22 @@ const Cart = () => {
         })}
       </div>
 
-        {/* CART TOTAL SECTION */}
-        <div className="flex justify-end my-20">
-          <div className="w-full sm:w-[450px]">
-            <CartTotal />
-            <div className="w-full text-end">
-              <button onClick={() => {
-                navigate("/placeOrder")
-              }} className="bg-black text-white text-sm my-8 px-8 py-3">PROCEED TO CEHCKOUT</button>
-            </div>
+      {/* CART TOTAL SECTION */}
+      <div className="flex justify-end my-20">
+        <div className="w-full sm:w-[450px]">
+          <CartTotal />
+          <div className="w-full text-end">
+            <button
+              onClick={() => {
+                navigate("/placeOrder");
+              }}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
+              PROCEED TO CEHCKOUT
+            </button>
           </div>
         </div>
-
-
+      </div>
     </div>
   );
 };
