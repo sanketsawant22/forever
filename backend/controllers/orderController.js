@@ -5,7 +5,7 @@ import userModel from "../models/userModel.js";
 const placeOrder = async (req, res) => {
 
     try {
-        const {userId, items, amount, address} = req.body; 
+        const { userId, items, amount, address } = req.body;
 
         const orderData = {
             userId,
@@ -21,12 +21,12 @@ const placeOrder = async (req, res) => {
         await newOrder.save();
 
         // MAKE CART EMPTY AFTER ORDER IS PLACED
-        await userModel.findByIdAndUpdate(userId, {cartData: {}});
+        await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-        res.json({success: true, message: "Order placed successfully"});
+        res.json({ success: true, message: "Order placed successfully" });
     } catch (error) {
         console.log(error);
-        res.json({success: false, message:error.message});
+        res.json({ success: false, message: error.message });
     }
 
 }
@@ -44,27 +44,48 @@ const placeOrderRazor = async (req, res) => {
 // ALL ORDER DATA FOR ADMIN PANEL
 const allOrders = async (req, res) => {
 
+    try {
+
+        const orders = await orderModel.find({});
+        res.json({ success: true, orders });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+
 }
 
 // USER ORDER DATA FOR FRONTEND
 const userOrder = async (req, res) => {
     try {
-        
-        const {userId } = req.body;
 
-        const userOrders = await orderModel.find({userId});
+        const { userId } = req.body;
 
-        res.json({success: true, userOrders});
+        const userOrders = await orderModel.find({ userId });
+
+        res.json({ success: true, userOrders });
 
     } catch (error) {
         console.log(error);
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message });
     }
 }
 
 // UPDATE ORDER STATUS FROM ADMIN PANEL
 const updateStatus = async (req, res) => {
+    try {
 
+        const { orderId, status } = req.body;
+
+        await orderModel.findByIdAndUpdate(orderId, { status });
+
+        res.json({ success: true, message: "Status updated successfully" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
 }
 
-export {placeOrder, placeOrderStripe, placeOrderRazor, allOrders, userOrder, updateStatus};
+export { placeOrder, placeOrderStripe, placeOrderRazor, allOrders, userOrder, updateStatus };

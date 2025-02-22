@@ -101,8 +101,3 @@ const Ordes = () => {
 };
 
 export default Ordes;
-
-
-
-
-// 11 27 
