@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import Navbar from "./components/Navbar.jsx";
-import SearchBar from "./components/searchBar.jsx";
+import SearchBar from "./components/SearchBar.jsx";
 
 import Home from "./pages/Home.jsx";
 import Collection from "./pages/Collection.jsx";
