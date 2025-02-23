@@ -1,8 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-  import { ToastContainer, toast } from "react-toastify";
-
+import { ToastContainer, toast } from "react-toastify";
 
 import Navbar from "./components/Navbar.jsx";
 import SearchBar from "./components/searchBar.jsx";
