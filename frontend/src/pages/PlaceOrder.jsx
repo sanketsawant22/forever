@@ -44,6 +44,47 @@ const PlaceOrder = () => {
     }));
   };
 
+  const initPay = (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Order Payment",
+      description: "Order Payment",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        try {
+          const { data } = await axios.post(
+            backendUrl + "/api/order/verifyRazorpay",
+            {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            },
+            { headers: { token } }
+          );
+
+          console.log(data);
+
+          if (data.success) {
+            toast.success("Payment successful");
+            navigate("/orders");
+            setcartItems({});
+          } else {
+            toast.error("Payment verification failed");
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+        }
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   const onsubmitHandeler = async (e) => {
     e.preventDefault();
 
@@ -105,6 +146,28 @@ const PlaceOrder = () => {
           } else {
             toast.error(responseStripe.data.message);
           }
+          break;
+
+        // API CALL FOR RAZORPAY
+        case "razorpay":
+          const responseRazorPay = await axios.post(
+            backendUrl + "/api/order/razorpay",
+            orderData,
+            { headers: { token } }
+          );
+
+          console.log("Razorpay Order Response:", responseRazorPay.data);
+
+          if (responseRazorPay.data.success && responseRazorPay.data.order) {
+            if (!responseRazorPay.data.order.id) {
+              console.error("Error: Order ID is missing in Razorpay response");
+            } else {
+              initPay(responseRazorPay.data.order);
+            }
+          } else {
+            console.error("Error: Razorpay order creation failed");
+          }
+
           break;
 
         default:
