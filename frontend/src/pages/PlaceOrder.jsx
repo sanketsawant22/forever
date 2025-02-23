@@ -72,6 +72,8 @@ const PlaceOrder = () => {
         amount: getCartAmount() + deliveryfee,
       };
 
+      console.log(orderData);
+
       switch (method) {
         // API CALL FOR COD
         case "cod":
@@ -86,6 +88,22 @@ const PlaceOrder = () => {
             navigate("/orders");
           } else {
             toast.error(response.data.meassage);
+          }
+          break;
+
+        // API CALL FOR STRIPE
+        case "stripe":
+          const responseStripe = await axios.post(
+            backendUrl + "/api/order/stripe",
+            orderData,
+            { headers: { token } }
+          );
+
+          if (responseStripe.data.success) {
+            const { session_url } = responseStripe.data;
+            window.location.replace(session_url);
+          } else {
+            toast.error(responseStripe.data.message);
           }
           break;
 

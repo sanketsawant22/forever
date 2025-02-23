@@ -14,9 +14,10 @@ import Contact from "./pages/Contact.jsx";
 import Product from "./pages/Product.jsx";
 import Cart from "./pages/Cart.jsx";
 import Login from "./pages/Login.jsx";
-import Placeorder from "./pages/Placeorder.jsx";
 import Orders from "./pages/Orders.jsx";
 import Footer from "./components/Footer.jsx";
+import PlaceOrder from "./pages/PlaceOrder.jsx";
+import Verify from "./pages/Verify.jsx";
 
 const App = () => {
   return (
@@ -34,8 +35,9 @@ const App = () => {
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/placeorder" element={<Placeorder />} />
+        <Route path="/placeorder" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/verify" element={<Verify />} />
       </Routes>
       <Footer />
     </div>
