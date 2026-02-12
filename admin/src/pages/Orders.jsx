@@ -15,7 +15,7 @@ const Orders = ({ token }) => {
 
     try {
       const response = await axios.post(
-        backendUrl + "/api/order/list",
+        backendUrl + "/order/list",
         {},
         { headers: { token } }
       );

@@ -56,7 +56,7 @@ const PlaceOrder = () => {
       handler: async (response) => {
         try {
           const { data } = await axios.post(
-            backendUrl + "/api/order/verifyRazorpay",
+            backendUrl + "/order/verifyRazorpay",
             {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -119,7 +119,7 @@ const PlaceOrder = () => {
         // API CALL FOR COD
         case "cod":
           const response = await axios.post(
-            `${backendUrl}/api/order/place`,
+            `${backendUrl}/order/place`,
             orderData,
             { headers: { token } }
           );
@@ -135,7 +135,7 @@ const PlaceOrder = () => {
         // API CALL FOR STRIPE
         case "stripe":
           const responseStripe = await axios.post(
-            backendUrl + "/api/order/stripe",
+            backendUrl + "/order/stripe",
             orderData,
             { headers: { token } }
           );
@@ -151,7 +151,7 @@ const PlaceOrder = () => {
         // API CALL FOR RAZORPAY
         case "razorpay":
           const responseRazorPay = await axios.post(
-            backendUrl + "/api/order/razorpay",
+            backendUrl + "/order/razorpay",
             orderData,
             { headers: { token } }
           );

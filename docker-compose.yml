@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  reverse-proxy:
+    image: nginx:alpine
+    container_name: forever-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/reverse-proxy.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+      - admin
+    networks:
+      - forever-net
+
+  backend:
+    build: ./backend
+    container_name: forever-backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - forever-net
+
+  frontend:
+    build: ./frontend
+    container_name: forever-frontend
+    expose:
+      - "80"
+    networks:
+      - forever-net
+
+  admin:
+    build: ./admin
+    container_name: forever-admin
+    expose:
+      - "80"
+    networks:
+      - forever-net
+
+networks:
+  forever-net:
+    driver: bridge

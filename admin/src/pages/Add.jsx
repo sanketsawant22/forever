@@ -53,7 +53,7 @@ const Add = ({ token }) => {
       images[3] && formData.append("image4", images[3]);
 
       const response = await axios.post(
-        backendUrl + "/api/product/add",
+        backendUrl + "/product/add",
         formData,
         { headers: { token } }
       );
